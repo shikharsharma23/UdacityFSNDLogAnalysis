@@ -1,7 +1,7 @@
 # Log-Analysis
 ##Project Overview
 
-In this project, you'll work with data that could have come from a real-world web application,
+In this project, we work with data that could have come from a real-world web application,
 with fields representing information that a web server would record, such as HTTP status codes and URL paths. The web server and the reporting tool both connect to the same database, allowing information to flow from the web server into the report.
 
 ## How to Run?
@@ -34,7 +34,7 @@ with fields representing information that a web server would record, such as HTT
 - The log table includes one entry for each time a user has accessed the site.
 - Use psql -d news to connect to database.
 
-##Task is to make a reporting tool that updates on real time basis
+## Task is to make a reporting tool that updates on real time basis
 
 - Query 1 : What are the most popular three articles of all time?
 - Query 2 :  Who are the most popular article authors of all time? 
