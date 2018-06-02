@@ -1,0 +1,115 @@
+-------- Starting Execution ----------------
+--------- List of Tables in database -------------
+
+
+
+
+          List of relations
+         Schema |   Name   | Type  |  Owner
+        --------+----------+-------+---------
+         public | articles | table | vagrant
+         public | authors  | table | vagrant
+         public | log      | table | vagrant
+
+
+
+
+---------- Table 1 : Articles-------------------------
+                                  Table "public.articles"
+         Column |           Type           |                       Modifiers
+        --------+--------------------------+-------------------------------------------------------
+         author | integer                  | not null
+         title  | text                     | not null
+         slug   | text                     | not null
+         lead   | text                     |
+         body   | text                     |
+         time   | timestamp with time zone | default now()
+         id     | integer                  | not null default nextval('articles_id_seq'::regclass)
+        Indexes:
+            "articles_pkey" PRIMARY KEY, btree (id)
+            "articles_slug_key" UNIQUE CONSTRAINT, btree (slug)
+        Foreign-key constraints:
+            "articles_author_fkey" FOREIGN KEY (author) REFERENCES authors(id)
+
+
+
+
+---------- Table 2 : Author-------------------------
+                         Table "public.authors"
+         Column |  Type   |                      Modifiers
+        --------+---------+------------------------------------------------------
+         name   | text    | not null
+         bio    | text    |
+         id     | integer | not null default nextval('authors_id_seq'::regclass)
+        Indexes:
+            "authors_pkey" PRIMARY KEY, btree (id)
+        Referenced by:
+            TABLE "articles" CONSTRAINT "articles_author_fkey" FOREIGN KEY (author) REFERENCES authors(id)
+
+
+
+
+---------- Table 3 : Log-------------------------
+                                  Table "public.log"
+         Column |           Type           |                    Modifiers
+        --------+--------------------------+--------------------------------------------------
+         path   | text                     |
+         ip     | inet                     |
+         method | text                     |
+         status | text                     |
+         time   | timestamp with time zone | default now()
+         id     | integer                  | not null default nextval('log_id_seq'::regclass)
+        Indexes:
+            "log_pkey" PRIMARY KEY, btree (id)
+
+
+
+
+Query 1 : What are the most popular three articles of all time?
+Query 2 :  Who are the most popular article authors of all time?
+Query 3  : On which days did more than 1 percent of requests lead to errors?
+
+
+
+
+----------- Executing Query Number : 1-------------
+
+
+select title,count(*) from article_log_join group by title order by count desc limit 3;
+
+
+
+------------- Result of Query Number : 1---------
+('Candidate is jerk, alleges rival', 342102L)
+('Bears love berries, alleges bear', 256365L)
+('Bad things gone, say good people', 171762L)
+
+
+
+----------- Executing Query Number : 2-------------
+
+
+select name, count(*) from article_log_join join authors on article_log_join.author=authors.id group by name order by count desc;
+
+
+
+------------- Result of Query Number : 2---------
+('Ursula La Multa', 512805L)
+('Rudolf von Treppenwitz', 427781L)
+('Anonymous Contributor', 171762L)
+('Markoff Chaney', 85387L)
+
+
+
+----------- Executing Query Number : 3-------------
+
+
+select date, percent_error from (select part1.date,100*CAST(error_requests AS FLOAT)/total_requests as percent_error from
+ (select date(time),count(*) as error_requests from log where status like concat('%',404,'%') group by date(time)) part1
+join
+(select date(time),count(*) as total_requests from log  group by date(time)) part2
+on part1.date=part2.date) part3 where percent_error>1;
+
+
+------------- Result of Query Number : 3---------
+(datetime.date(2016, 7, 17), 2.26268624680273)
