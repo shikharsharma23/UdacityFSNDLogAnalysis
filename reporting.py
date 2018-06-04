@@ -27,15 +27,17 @@ cursor = db.cursor()  # get cursor
 
 query_counter = 0
 for query in queries:
-	query_counter = query_counter + 1
-	print('----------- Executing Query Number : ' + str(query_counter) + '-------------')
-	print('\n')
-	print(query)
-	print('\n')
-	cursor.execute(query)
-	print('------------- Result of Query Number : ' + str(query_counter) + '---------')
-	for result in cursor.fetchall():
-		print(result)
-	print('\n\n')
+    query_counter = query_counter + 1
+    print('----------- Executing Query Number : ' +
+          str(query_counter) + '-------------')
+    print('\n')
+    print(query)
+    print('\n')
+    cursor.execute(query)
+    print('------------- Result of Query Number : ' +
+          str(query_counter) + '---------')
+    for result in cursor.fetchall():
+        print(result)
+    print('\n\n')
 
 db.close()  # close db connection
