@@ -1,3 +1,32 @@
+news=> select title,count(*) from article_log_join group by title order by count desc limit 3;
+              title               | count
+----------------------------------+--------
+ Candidate is jerk, alleges rival | 338647
+ Bears love berries, alleges bear | 253801
+ Bad things gone, say good people | 170098
+(3 rows)
+
+news=> select name, count(*) from article_log_join join authors on article_log_join.author=authors.id group by name order by count desc;
+ERROR:  column article_log_join.author does not exist
+LINE 1: ...e, count(*) from article_log_join join authors on article_lo...
+                                                             ^
+news=> create view article_log_join as  select title,author,slug,path from log join articles on log.path like concat('%',articles.slug);
+ERROR:  relation "article_log_join" already exists
+news=> drop view article_log_join;
+DROP VIEW
+news=> create view article_log_join as  select title,author,slug,path from log join articles on log.path like concat('%',articles.slug);
+CREATE VIEW
+news=> select name, count(*) from article_log_join join authors on article_log_join.author=authors.id group by name order by count desc;
+          name          | count
+------------------------+--------
+ Ursula La Multa        | 507594
+ Rudolf von Treppenwitz | 423457
+ Anonymous Contributor  | 170098
+ Markoff Chaney         |  84557
+(4 rows)
+
+news=> \q
+vagrant@vagrant:/vagrant/news$ python reporting.py
 -------- Starting Execution ----------------
 --------- List of Tables in database -------------
 
@@ -78,11 +107,10 @@ Query 3  : On which days did more than 1 percent of requests lead to errors?
 select title,count(*) from article_log_join group by title order by count desc limit 3;
 
 
-
 ------------- Result of Query Number : 1---------
-('Candidate is jerk, alleges rival', 342102L)
-('Bears love berries, alleges bear', 256365L)
-('Bad things gone, say good people', 171762L)
+('Candidate is jerk, alleges rival', 338647L)
+('Bears love berries, alleges bear', 253801L)
+('Bad things gone, say good people', 170098L)
 
 
 
@@ -92,12 +120,11 @@ select title,count(*) from article_log_join group by title order by count desc l
 select name, count(*) from article_log_join join authors on article_log_join.author=authors.id group by name order by count desc;
 
 
-
 ------------- Result of Query Number : 2---------
-('Ursula La Multa', 512805L)
-('Rudolf von Treppenwitz', 427781L)
-('Anonymous Contributor', 171762L)
-('Markoff Chaney', 85387L)
+('Ursula La Multa', 507594L)
+('Rudolf von Treppenwitz', 423457L)
+('Anonymous Contributor', 170098L)
+('Markoff Chaney', 84557L)
 
 
 

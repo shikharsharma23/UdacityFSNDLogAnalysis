@@ -48,7 +48,7 @@ See the table details and programs output in output.txt
 View Created for query 1 and query 2 :
 
 
-`create view article_log_join as select title,author,slug,path from log join articles on log.path like concat('%',articles.slug,'%');`
+`create view article_log_join as  select title,author,slug,path from log join articles on log.path like concat('%',articles.slug);`
 
 
 Running the queries:
