@@ -1,0 +1,1 @@
+create view article_log_join as  select title,author,slug,path from log join articles on log.path like concat('%',articles.slug);
