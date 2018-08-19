@@ -9,6 +9,7 @@ with fields representing information that a web server would record, such as HTT
 ## PreRequisites:
 ### Python3
 ### Vagrant
+### Git
 ### VirtualBox
 
 ## Setup Project:
@@ -20,7 +21,7 @@ with fields representing information that a web server would record, such as HTT
 - Launching the Virtual Machine:
 - Launch the Vagrant VM inside Vagrant sub-directory in the downloaded fullstack-nanodegree-vm repository using command:
   `$ vagrant up`
-- Then Log into this using command:
+- Then Log into this using command: (via git bash)
   `$ vagrant ssh`
 - Change directory to /vagrant and look around with ls.
 - Setting up the database and Creating Views:
